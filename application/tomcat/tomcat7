@@ -1,0 +1,131 @@
+#!/bin/sh
+
+
+# chkconfig: 35 86 20
+# description: tomcat restart scripts.
+
+LANG=zh_CN.UTF8
+
+## Source function library.
+. /etc/rc.d/init.d/functions
+
+## common argv
+GREEN_COLOR='\E[1;32m'
+RED_COLOR='\E[1;31m'
+RES='\E[0m'
+
+[[ $(id -un) != 'tomcat' ]] && { echo -e ${RED_COLOR}Only tomcat user can run this scripts.${RES} && exit; }
+
+TOMCAT_HOME=/opt/tomcat7
+prog=${TOMCAT_HOME##*/}
+
+
+if [ ! -d ${TOMCAT_HOME} ];then
+       echo -e "${RED_COLOR}${TOMCAT_HOME} is not exists.${RES}"
+       exit
+else
+       if [ ! -f ${TOMCAT_HOME}/bin/startup.sh -o ! -f ${TOMCAT_HOME}/bin/shutdown.sh ];then
+              echo -e "${RED_COLOR}${TOMCAT_HOME}/bin/startup.sh or ${TOMCAT_HOME}/bin/shutdown.sh is not exists.${RES}"
+              exit
+       fi
+fi
+
+
+start()
+{
+  [ ! -f ${TOMCAT_HOME}/conf/server.xml ] && { echo -e "${RED_COLOR}${TOMCAT_HOME}/conf/server.xml is not exists.${RES}" && exit; }
+
+     echo -e "${GREEN_COLOR}Starting $prog: ${RES}"
+     ${TOMCAT_HOME}/bin/startup.sh
+     rv1=$?
+     [ $rv1 -eq 0 ] && action "$prog started OK!!!" /bin/true || action "$prog started OK!!!" /bin/false
+
+     echo
+     echo
+
+     echo -e "${GREEN_COLOR}$prog process: ${RES}"
+     sleep 2
+     rv2=$(ps ux | egrep "$prog" | egrep -v 'grep|ps|-bash|egrep|sh|vi|vim' | wc -l)
+     if [ $rv2 -ne 0 ];then
+          ps ux | egrep "$prog" | egrep -v 'grep|ps|-bash|egrep|sh|vi|vim'
+
+	  echo
+	  echo
+
+	  echo -e "${GREEN_COLOR}$prog port: ${RES}"
+	  sleep 2
+	  rv3=$(netstat -lnpute | grep 'java' | grep 'LISTEN' | wc -l)
+	  if [ $rv3 -ne 0 ];then
+	       netstat -lnpute | grep 'java' | grep 'LISTEN'
+	  else
+	       echo -e "${RED_COLOR}$prog port is not exists.${RES}"
+	  fi
+     else
+          echo -e "${RED_COLOR}$prog process is not running.${RES}"
+     fi
+}
+
+
+stop()
+{
+    echo -e "${GREEN_COLOR}Shutting down $prog: ${RES}"
+    ${TOMCAT_HOME}/bin/shutdown.sh
+    sleep 2
+    rv1=$(ps ux | egrep "$prog" | egrep -v 'egrep|grep|ps|-bash|vi|vim|sh|bash|tailf' | wc -l)
+
+    [ $rv1 -eq 0 ] && action "$prog stoped OK!!!" /bin/true
+    ps ux | egrep "$prog" | egrep -v 'grep|egrep|ps|-bash|vi|vim|sh|bash' | awk '{print $2}' | xargs kill -9 &> /dev/null
+    action "$prog killed OK!!!" /bin/true
+
+    #if [ $rv1 -eq 0 ];then
+    #     action "$prog stoped OK!!!" /bin/true
+    #else
+    #     ps ux | egrep "$prog" | egrep -v "grep|egrep|ps|-bash|vi|vim|sh|bash" | awk '{print $2}' | xargs kill -9 &> /dev/null
+    #     action "$prog killed OK!!!" /bin/true
+    #fi
+}
+
+
+restart()
+{
+       stop
+
+       echo
+       echo
+
+       start 
+}
+
+
+log()
+{
+   tailf ${TOMCAT_HOME}/logs/catalina.$(date +%Y%m%d).out
+}
+
+
+status()
+{
+      echo -e "${GREEN_COLOR}$prog process: ${RES}"
+      ps ux | egrep "$prog" | egrep -v 'grep|ps|-bash|egrep'
+
+      echo
+      echo
+
+      echo -e "${GREEN_COLOR}$prog port: ${RES}"
+      netstat -lnpute | grep 'java' | grep 'LISTEN'
+
+      #status java
+      exit 0
+}
+
+
+case "$1" in
+     start|stop|restart|log|status)
+        $1
+        #exit 3
+        ;;
+
+     *)
+        echo -e "${RED_COLOR}Usage: $0 {start|stop|reload|restart|log|status}${RES}"
+        exit 4
+esac

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Server port="8305" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+
+  <Listener className="org.apache.catalina.core.JasperListener" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+  <Service name="Catalina">
+<Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
+                maxThreads="5000" minSpareThreads="20" maxIdleTime="30000" />
+    <Connector executor="tomcatThreadPool" port="8888" protocol="HTTP/1.1" 
+               maxHttpHeaderSize="8192" useBodyEncodingForURI="true"  
+                redirectPort="8443"
+                enableLookups="false"
+                compression="on"
+                compressionMinSize="2048"
+                compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain"
+                connectionTimeout="20000"
+                disableUploadTimeout="true"
+                URIEncoding="UTF-8"
+                server="SunOS 5.8"
+                />
+    <Engine name="Catalina" defaultHost="localhost"  jvmRoute="jvm673">
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+<Host name="localhost" debug="0" appBase="webapps" unpackWARs="true" autoDeploy="true"></Host>
+<Host name="www.google.com" debug="9" appBase="webapps"
+                              unpackWARs="false" autoDeploy="false"
+                               xmlValidation="false" xmlNamespaceAware="false">
+
+
+<Alias>127.0.0.1</Alias>
+<Alias>google.com</Alias>
+<Alias>www.google.com</Alias>
+
+
+          <Logger className="org.apache.catalina.logger.FileLogger"
+                 directory="logs"  prefix="A02_web_log." suffix=".txt"
+            timestamp="true"/>
+        <Context path="" docBase="/web/A02/web/WebRoot"  reloadable="false">
+        <Valve className="org.apache.catalina.valves.AccessLogValve"
+      directory="logs/access/A02"
+      prefix="A02_web_access_log."
+      suffix=".txt"
+      pattern="%{X-Forwarded-FOR}i %a %v %U %t %m %s  %{User-Agent}i" resolveHosts="false"/>
+       </Context>
+</Host>
+
+    </Engine>
+
+  </Service>
+
+</Server>

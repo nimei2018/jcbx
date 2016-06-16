@@ -1,0 +1,6 @@
+*.svn*
+*.git*
+init.properties
+openIp.lib
+openDomain.lib
+logs
