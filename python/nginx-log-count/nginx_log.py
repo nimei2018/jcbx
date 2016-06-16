@@ -124,7 +124,7 @@ def nginxlog(log_path = sys.argv[1]):
 
     for k,v in new_result:
         print '{:10s} {:<10s}'.format(str(v),k)
-        result2 = '{:10s} {:<10s}'.format(str(v),k) +'\n'
+        result2 = '{:10s} {:<10s}'.format(str(v),k) + '\n'
         with open('A04_web.csv', 'a+') as f2:
             f2.write(result2)
 
