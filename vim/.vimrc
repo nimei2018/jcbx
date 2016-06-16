@@ -1266,7 +1266,7 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.rb,*.java,*.py,*.go exec ":call SetTitle(
 func SetTitle()
 if &filetype == 'sh'
   call setline(1,"\#!/bin/bash")
-  call append(line("."), "export zh_CN.UTF8")
+  call append(line("."), "export LANG=zh_CN.UTF8")
   call append(line(".")+1,"# File Name: ".expand("%"))
   call append(line(".")+2,"# Created Time: ".strftime("%c"))
   call append(line(".")+3,"# Mail: Jason Bourne@nimei.com")
