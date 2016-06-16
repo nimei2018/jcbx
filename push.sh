@@ -1,5 +1,5 @@
 #!/bin/bash
-export zh_CN.UTF8
+export LANG=zh_CN.UTF8
 # File Name: push.sh
 # Created Time: 2016年06月16日 星期四 11时49分36秒
 # Mail: Jason Bourne@nimei.com
