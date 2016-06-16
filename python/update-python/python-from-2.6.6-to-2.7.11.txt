@@ -1,0 +1,257 @@
+完整版升级python 2.6 to 2.7
+1.安装sqlite
+   wget http://www.sqlite.org/2016/sqlite-autoconf-3130000.tar.gz
+   http://www.sqlite.org/download.html
+   http://www.cnphp6.com/archives/38467
+   http://blog.chinaunix.net/uid-22476414-id-3401048.html
+
+2.安装python的ssl功能
+python 出现'module' object has no attribute 'HTTPSHandler' 错误,是因为你编译python的时候没有把ssl模块编译进去，重新编译安装python,并把ssl模块包含进去就可以了
+
+vim Python-2.7.11/Modules/Setup.dist
+#SSL=/usr/local/ssl
+#_ssl _ssl.c \
+#  -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+#  -L$(SSL)/lib -lssl -lcrypto
+
+SSL=/usr/local/ssl
+_ssl _ssl.c \
+   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+   -L$(SSL)/lib -lssl -lcrypto
+
+3.安装新版python
+cd /usr/bin
+\cp python python-266
+
+wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz
+tar zxvf Python-2.7.11.tgz
+cd Python-2.7.11
+./configure --prefix=/usr/local/python2711
+make
+make install
+
+# 主要如果在configure的时候添加参数--enable-shared，生成的python版本是2.7.10
+
+# file python
+python: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.4.0, not stripped
+
+
+4.安装easy_install
+# curl -O https://svn.apache.org/repos/asf/oodt/tools/oodtsite.publisher/trunk/distribute_setup.py
+# /usr/local/python2711/bin/python2.7 distribute_setup.py
+
+
+5.安装pip
+# /usr/local/python2711/bin/easy_install pip
+# /usr/local/python2711/bin/pip -V
+pip 8.1.2 from /usr/local/python2711/lib/python2.7/site-packages/pip-8.1.2-py2.7.egg (python 2.7)
+
+
+6.安装ipython
+# /usr/local/python2711/bin/pip install Readline
+# /usr/local/python2711/bin/pip install ipython
+
+====================================================================================
+
+# cat /etc/issue
+CentOS release 6.5 (Final)
+Kernel \r on an \m
+
+# uname -rm
+2.6.32-431.el6.x86_64 x86_64
+
+
+将python从2.6.6升级至2.7.11:
+# which python
+/usr/bin/python
+
+# python -V
+Python 2.6.6
+
+cd /usr/bin
+\cp python python-266
+
+wget Python-2.7.11.tgz
+tar zxvf Python-2.7.11.tgz
+cd Python-2.7.11
+./configure --prefix=/usr/local/python2711
+make
+make install
+
+
+yum -y install pip
+# pip
+Traceback (most recent call last):
+  File "/usr/bin/pip", line 5, in <module>
+    from pkg_resources import load_entry_point
+ImportError: No module named pkg_resources
+
+
+原因：
+其实发生这个问题是因为：虽然你已经把Python升级到了2.7版本，但是pip仍然是原来的，版本，仍然在原来python的site-package里面
+# ll /usr/lib/python2.6/site-packages/
+
+很多模块都被安装在这里。直接打pip，还是使用的原来的pip。所以我们的思路就是：应该在新的Python中安装pip，这样才不会报错
+
+# curl -O https://svn.apache.org/repos/asf/oodt/tools/oodtsite.publisher/trunk/distribute_setup.py
+
+使用新版本的python来运行这个脚本，这个会自动安装出来一个easy_install，然后使用这个新的easy_install来安装pip就可以了！
+
+# /usr/local/python2711/bin/python2.7 distribute_setup.py
+
+# /usr/local/python2711/bin/easy_install pip
+
+# /usr/local/python2711/bin/pip -V
+pip 8.1.2 from /usr/local/python2711/lib/python2.7/site-packages/pip-8.1.2-py2.7.egg (python 2.7)
+
+安装生成的所有二进制文件，都是在你的PYTHON_HOME/bin/，因为我的是安装在/usr/local/python/，所以命令都在这里，以后再调用pip要使用绝对路径，或者做链接
+
+python2.7.11版本的site-package目录位置:
+# ll /usr/local/python2711/lib/python2.7/site-packages/
+
+#新版本命令:
+# ls /usr/local/python2711/bin/
+2to3
+easy_install
+easy_install-2.7
+idle
+iptest
+iptest2
+pip
+pip2
+pip2.7
+pydoc
+python -> python2
+python2 -> python2.7
+python2.7
+python2.7-config
+python2-config -> python2.7-config
+python-config -> python2-config
+smtpd.py
+
+
+
+安装ipython:
+
+# /usr/local/python2711/bin/pip install ipython
+
+# /usr/local/python2711/bin/ipython  
+WARNING: IPython History requires SQLite, your history will not be saved
+WARNING: Readline services not available or not loaded.
+WARNING: The auto-indent feature requires the readline library
+Python 2.7.11 (default, May 19 2016, 13:13:17)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 4.2.0 -- An enhanced Interactive Python.
+...............................................................................
+
+
+# pip install Readline   # 这个解决ipython颜色问题，解决上面3个警告后面2个警告
+
+WARNING: Readline services not available or not loaded.
+WARNING: The auto-indent feature requires the readline library
+
+
+
+WARNING: IPython History requires SQLite, your history will not be saved 解决方法:
+顺带把ssl也安装上:
+python 出现'module' object has no attribute 'HTTPSHandler' 错误,是因为你编译python的时候没有把ssl模块编译进去，重新编译安装python,并把ssl模块包含进去就可以了
+vim Python-2.7.11/Modules/Setup.dist
+#SSL=/usr/local/ssl
+#_ssl _ssl.c \
+#   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+#   -L$(SSL)/lib -lssl -lcrypto
+
+SSL=/usr/local/ssl
+_ssl _ssl.c \
+   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+   -L$(SSL)/lib -lssl -lcrypto
+
+
+http://www.sqlite.org/download.html
+wget http://www.sqlite.org/2016/sqlite-autoconf-3130000.tar.gz
+tar zxvf sqlite-autoconf-3130000.tar.gz
+cd sqlite-autoconf-3130000
+./configure --prefix=/usr/local     #必须./configure --prefix=/usr/local/也就是指定安装路径
+make
+make install
+
+
+
+cd /usr/local
+\mv python2711 python2711-20160519
+
+rm -rf Python-2.7.11
+tar zxvf Python-2.7.11.tgz
+cd Python-2.7.11
+
+vim Python-2.7.11/Modules/Setup.dist
+#SSL=/usr/local/ssl
+#_ssl _ssl.c \
+#  -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+#  -L$(SSL)/lib -lssl -lcrypto
+
+SSL=/usr/local/ssl
+_ssl _ssl.c \
+   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+   -L$(SSL)/lib -lssl -lcrypto
+
+./configure --prefix=/usr/local/python2711
+make
+make install
+
+
+# curl -O https://svn.apache.org/repos/asf/oodt/tools/oodtsite.publisher/trunk/distribute_setup.py
+# /usr/local/python2711/bin/python2.7 distribute_setup.py
+# /usr/local/python2711/bin/easy_install pip
+# /usr/local/python2711/bin/pip -V
+pip 8.1.2 from /usr/local/python2711/lib/python2.7/site-packages/pip-8.1.2-py2.7.egg (python 2.7)
+
+
+# /usr/local/python2711/bin/pip install Readline
+# /usr/local/python2711/bin/pip install ipython
+
+# ipython
+Python 2.7.11 (default, May 19 2016, 15:00:31)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 4.2.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: 
+
+
+
+# tail /etc/profile
+alias python27=/usr/local/python2711/bin/python2.7
+alias easy_install27=/usr/local/python2711/bin/easy_install
+alias pip27=/usr/local/python2711/bin/pip
+alias ipython27=/usr/local/python2711/bin/ipython
+
+
+
+
+#新版本命令:
+# ls /usr/local/python2711/bin/
+2to3
+easy_install
+easy_install-2.7
+idle
+iptest
+iptest2
+ipython
+ipython2
+pip
+pip2
+pip2.7
+pydoc
+python -> python2
+python2 -> python2.7
+python2.7
+python2.7-config
+python2-config -> python2.7-config
+python-config -> python2-config
+smtpd.py
