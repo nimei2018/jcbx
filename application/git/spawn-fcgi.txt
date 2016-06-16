@@ -1,8 +1,0 @@
-# spawn-fcgi
-/usr/bin/spawn-fcgi -a 127.0.0.1 -p 9000 -C 100 -f /usr/local/sbin/fcgiwrap -u tomcat -g tomcat
-
-$ ps -ef | grep fcgi
-tomcat    4100     1  0 Mar14 ?        02:48:53 /usr/local/sbin/fcgiwrap
-
-$ ll /usr/libexec/git-core/git-http-backend
--rwxr-xr-x. 1 root root 4611625 3月  11 13:20 /usr/libexec/git-core/git-http-backend
