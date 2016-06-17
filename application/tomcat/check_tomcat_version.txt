@@ -1,0 +1,12 @@
+$ ansible ws -m raw -a "/opt/tomcat7/bin/catalina.sh version | egrep 'Architecture|Server number|JVM Version'"
+
+192.168.1.120 | SUCCESS | rc=0 >>
+Server number:  7.0.59.0
+Architecture:   amd64
+JVM Version:    1.6.0_45-b06
+
+
+192.168.1.106 | SUCCESS | rc=0 >>
+Server number:  7.0.59.0
+Architecture:   amd64
+JVM Version:    1.6.0_45-b06
