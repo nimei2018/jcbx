@@ -1,0 +1,92 @@
+pillar相同key，下面覆盖上面
+
+
+$ pwd
+/etc/salt/srv/pillar
+
+$ cat top.sls
+base:
+    '*':
+        - test1
+        - C07_tsd
+
+$ cat test1.sls
+nginx:
+    root: /www
+
+$ cat C07_tsd.sls
+nginx:
+    root: /data
+
+$ sudo salt -N 'test1' saltutil.refresh_pillar
+10.140.50.119:
+    True
+
+$ sudo salt -N 'C07_tsd' saltutil.refresh_pillar    
+C07_tsd_10.140.50.101:
+    True
+C07_tsd_172.15.4.187:
+    True
+
+$ sudo salt -N 'test1' pillar.data nginx
+10.140.50.119:
+    ----------
+    nginx:
+        ----------
+        root:
+            /data
+
+$ sudo salt -N 'C07_tsd' pillar.data nginx    
+C07_tsd_10.140.50.101:
+    ----------
+    nginx:
+        ----------
+        root:
+            /data
+C07_tsd_172.15.4.187:
+    ----------
+    nginx:
+        ----------
+        root:
+            /data
+
+
+
+---------------------------------------
+$ cat top.sls
+base:
+    '*':
+        - C07_tsd
+        - test1
+
+$ sudo salt -N 'C07_tsd' saltutil.refresh_pillar
+C07_tsd_10.140.50.101:
+    True
+C07_tsd_172.15.4.187:
+    True
+
+$ sudo salt -N 'test1' saltutil.refresh_pillar
+10.140.50.119:
+    True
+
+$ sudo salt -N 'C07_tsd' pillar.data nginx     
+C07_tsd_10.140.50.101:
+    ----------
+    nginx:
+        ----------
+        root:
+            /www
+C07_tsd_172.15.4.187:
+    ----------
+    nginx:
+        ----------
+        root:
+            /www
+
+$ sudo salt -N 'test1' pillar.data nginx      
+10.140.50.119:
+    ----------
+    nginx:
+        ----------
+        root:
+            /www
