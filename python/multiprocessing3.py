@@ -21,7 +21,7 @@ if __name__ == '__main__':
     #Pool(processes=None, initializer=None, initargs=(), maxtasksperchild=None)
     #    Returns a process pool object
     # Pool的默认个数是CPU的核数,我本机是8核,因此若想看到等待结果需要大于8,即,Pool(8),表示同时跑8个进程
-    p = Pool(10)
+    p = Pool(8)
     for i in range(10):
         #apply_async(self, func, args=(), kwds={}, callback=None) method of multiprocessing.pool.Pool instance
         #    Asynchronous equivalent of `apply()` builtin
