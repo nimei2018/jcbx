@@ -1,6 +1,10 @@
 http://www.alloyteam.com/2012/03/web-cache-2-browser-cache/
-https://github.com/search
 
+google f12的使用：
+https://developers.google.com/web/tools/chrome-devtools/network-performance/resource-loading#view-network-timing-details-for-a-specific-resource
+
+
+https://github.com/search
 
     * Request URL:https://www.google-analytics.com/collect
     * Request Method:POST
