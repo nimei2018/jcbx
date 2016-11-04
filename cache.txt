@@ -1,4 +1,9 @@
 http://www.alloyteam.com/2012/03/web-cache-2-browser-cache/
+http://mp.weixin.qq.com/s?__biz=MjM5MDY5MTM4Nw==&mid=2449647984&idx=1&sn=9a64fbf7453232714bf286b83b188207&scene=0#wechat_redirect
+http://www.cnblogs.com/li0803/archive/2008/11/03/1324746.html
+http://kb.cnblogs.com/page/130970/
+
+
 
 google f12的使用：
 https://developers.google.com/web/tools/chrome-devtools/network-performance/resource-loading#view-network-timing-details-for-a-specific-resource
