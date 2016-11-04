@@ -1,1 +1,78 @@
 http://www.alloyteam.com/2012/03/web-cache-2-browser-cache/
+https://github.com/search
+
+
+    * Request URL:https://www.google-analytics.com/collect
+    * Request Method:POST
+    * Status Code:200 
+    * Remote Address:172.217.25.110:443
+* Response Headers
+    * access-control-allow-credentials:true
+    * access-control-allow-origin:https://github.com
+    * alt-svc:quic=":443"; ma=2592000; v="36,35,34"
+    * cache-control:no-cache, no-store, must-revalidate
+    * content-length:35
+    * content-type:image/gif
+    * date:Fri, 04 Nov 2016 15:42:07 GMT
+    * expires:Fri, 01 Jan 1990 00:00:00 GMT
+    * last-modified:Sun, 17 May 1998 03:00:00 GMT
+    * pragma:no-cache
+    * server:Golfe2
+    * status:200
+    * x-content-type-options:nosniff
+* Request Headers
+    * :authority:www.google-analytics.com
+    * :method:POST
+    * :path:/collect
+    * :scheme:https
+    * accept:*/*
+    * accept-encoding:gzip, deflate, br
+    * accept-language:zh-CN,zh;q=0.8,en;q=0.6
+    * cache-control:max-age=0
+    * content-length:253
+    * content-type:text/plain
+    * origin:https://github.com
+    * referer:https://github.com/
+    * user-agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+* Request Payload
+    * v=1&_v=j41&a=799742134&t=pageview&_s=1&dl=https%3A%2F%2Fgithub.com%2Fsearch&ul=zh-cn&de=UTF-8&dt=Code%20Search&sd=24-bit&sr=1440x900&vp=1246x367&je=0&fl=23.0%20r0&_u=SACAAAABM~&jid=&cid=1457612024.1478273968&tid=UA-3769691-2&cd1=Logged%20In&z=1481087264
+
+
+
+
+
+    * Request URL:https://api.github.com/_private/browser/stats
+    * Request Method:POST
+    * Status Code:200 OK
+    * Remote Address:192.30.253.117:443
+* Response Headersview source
+    * Access-Control-Allow-Origin:*
+    * Access-Control-Expose-Headers:ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+    * Cache-Control:no-cache
+    * Content-Length:5
+    * Content-Security-Policy:default-src 'none'
+    * Content-Type:application/json; charset=utf-8
+    * Date:Fri, 04 Nov 2016 15:42:09 GMT
+    * Server:GitHub.com
+    * Status:200 OK
+    * Strict-Transport-Security:max-age=31536000; includeSubdomains; preload
+    * Vary:Accept-Encoding
+    * X-Content-Type-Options:nosniff
+    * X-Frame-Options:deny
+    * X-GitHub-Media-Type:github.v3
+    * X-GitHub-Request-Id:31930C89:15601:434411:581CAC50
+    * X-Served-By:49aa99f015c25437a7443c4d3a58cd17
+    * X-XSS-Protection:1; mode=block
+* Request Headersview source
+    * Accept:*/*
+    * Accept-Encoding:gzip, deflate, br
+    * Accept-Language:zh-CN,zh;q=0.8,en;q=0.6
+    * Connection:keep-alive
+    * Content-Length:5420
+    * content-type:application/json
+    * Host:api.github.com
+    * Origin:https://github.com
+    * Referer:https://github.com/
+    * User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+* Request Payloadview source
+*    [{requestId: "31930C89:08A6:F69089:581CAC4D"}, {,…}, {,…}
